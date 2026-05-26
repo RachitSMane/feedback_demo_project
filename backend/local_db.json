@@ -1,0 +1,54 @@
+{
+  "faqs": [
+    {
+      "id": "faq-1",
+      "question": "What is the FAQ Platform?",
+      "answer": "It is a premium MERN stack portal where users can read FAQs, raise new queries if their questions are unanswered, and solve queries raised by other users. Contributors can propose answers, which are then vetted and approved by admins before going live.",
+      "category": "General",
+      "createdAt": "2026-05-26T05:05:26.713Z"
+    },
+    {
+      "id": "faq-2",
+      "question": "How do I raise a new query?",
+      "answer": "Navigate to the 'Raise Query' tab, fill in the question title, category, and an optional detailed description, and submit. It will immediately appear in the 'Solve Queries' tab for other community members or admins to answer.",
+      "category": "Usage",
+      "createdAt": "2026-05-26T05:05:26.715Z"
+    },
+    {
+      "id": "faq-3",
+      "question": "Can anyone solve a raised query?",
+      "answer": "Yes! Any registered user or contributor can view open queries, write a solution, and submit it. Once a solution is submitted by a user, it goes to the Admin Review queue. Once an administrator approves it, it gets added directly to this FAQ page.",
+      "category": "Usage",
+      "createdAt": "2026-05-26T05:05:26.715Z"
+    }
+  ],
+  "queries": [
+    {
+      "id": "query-1",
+      "question": "Can I edit an FAQ after it has been approved?",
+      "description": "I noticed a typo in one of the approved FAQs. Is there an edit feature for contributors or admins?",
+      "category": "Technical",
+      "status": "pending",
+      "solutions": [],
+      "raisedBy": "AnonymousUser",
+      "createdAt": "2026-05-26T03:05:26.715Z"
+    },
+    {
+      "id": "query-2",
+      "question": "What web frameworks are supported in this platform?",
+      "description": "Does the frontend use React, and can I add custom styles?",
+      "category": "Technical",
+      "status": "solved",
+      "solutions": [
+        {
+          "id": "sol-1",
+          "answer": "The platform is built strictly on React with a customized premium Vanilla CSS glassmorphic theme. No Tailwind CSS or external component libraries are used, providing absolute design fidelity.",
+          "solvedBy": "SuperCoder",
+          "createdAt": "2026-05-26T04:05:26.715Z"
+        }
+      ],
+      "raisedBy": "WebDevEnthusiast",
+      "createdAt": "2026-05-26T02:05:26.715Z"
+    }
+  ]
+}

@@ -1,41 +1,65 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import connectDB from './config/db.js';
-import faqRoutes from './routes/faqRoutes.js';
-import queryRoutes from './routes/queryRoutes.js';
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const socketIo = require('socket.io');
+const http = require('http');
 
-// Configure Environment Variables
 dotenv.config();
 
-// Establish Database Connection
-await connectDB();
-
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: { origin: process.env.FRONTEND_URL, credentials: true }
+});
 
-// Middlewares
+// Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// API Base Endpoints
-app.use('/api/faqs', faqRoutes);
-app.use('/api/queries', queryRoutes);
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+}).then(() => console.log('MongoDB connected'))
+  .catch(err => console.log('MongoDB connection error:', err));
 
-// Root Ping Route
+// Routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/faq', require('./routes/faq'));
+app.use('/api/tickets', require('./routes/tickets'));
+app.use('/api/voting', require('./routes/voting'));
+app.use('/api/search', require('./routes/search'));
+app.use('/api/analytics', require('./routes/analytics'));
+app.use('/api/chatbot', require('./routes/chatbot'));
+app.use('/api/translations', require('./routes/translations'));
+
+// Health check
 app.get('/api/health', (req, res) => {
-  res.status(200).json({
-    status: 'healthy',
-    database: global.useLocalDB ? 'Local JSON DB Failover' : 'MongoDB (Mongoose)',
-    timestamp: new Date()
+  res.json({ status: 'Server is running', timestamp: new Date() });
+});
+
+// Socket.io events
+io.on('connection', (socket) => {
+  console.log('New client connected:', socket.id);
+  
+  socket.on('join-support', (data) => {
+    socket.join('support-' + data.ticketId);
+  });
+  
+  socket.on('message', (data) => {
+    io.to('support-' + data.ticketId).emit('new-message', data);
+  });
+  
+  socket.on('disconnect', () => {
+    console.log('Client disconnected:', socket.id);
   });
 });
 
-// Port Selection
 const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server successfully launched on port ${PORT}`);
-  console.log(`📈 Health endpoint active at http://localhost:${PORT}/api/health`);
-  console.log(`📚 FAQs active at http://localhost:${PORT}/api/faqs`);
-  console.log(`💬 Queries active at http://localhost:${PORT}/api/queries`);
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
+
+module.exports = { app, io };

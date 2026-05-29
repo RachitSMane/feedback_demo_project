@@ -1,17 +1,36 @@
 {
-  "name": "faq-backend",
+  "name": "samagama-faq-backend",
   "version": "1.0.0",
-  "description": "Premium FAQ backend with Express, MongoDB, and JSON fallback",
+  "description": "AI-powered FAQ management system with dynamic ticketing",
   "main": "server.js",
-  "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "nodemon server.js",
+    "test": "jest"
   },
   "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.0.0",
+    "dotenv": "^16.0.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "mongoose": "^8.3.1"
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
+    "axios": "^1.3.4",
+    "openai": "^3.2.1",
+    "sentiment": "^11.1.1",
+    "uuid": "^9.0.0",
+    "validator": "^13.9.0",
+    "sharp": "^0.32.0",
+    "nodemailer": "^6.9.1",
+    "socket.io": "^4.6.1",
+    "redis": "^4.6.5",
+    "stripe": "^11.18.0",
+    "twilio": "^3.77.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
   }
 }
